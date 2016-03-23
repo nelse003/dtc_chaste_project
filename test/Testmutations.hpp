@@ -31,7 +31,7 @@ class TestRunningCryptSimulationsWithMutationsTutorial : public AbstractCellBase
 public:
     void TestMeshBasedCryptWithMutations() throw(Exception)
     {
-        CylindricalHoneycombMeshGenerator generator(5, 5, 2);
+        CylindricalHoneycombMeshGenerator generator(10, 10, 2);
         Cylindrical2dMesh* p_mesh = generator.GetCylindricalMesh();
 
         std::vector<unsigned> location_indices = generator.GetCellLocationIndices();
@@ -73,7 +73,7 @@ public:
         {
             unsigned node_index = cell_population.GetLocationIndexUsingCell(*cell_iter);
 
-            if (node_index == 14) // Chosen from looking at the results from steady state
+            if (node_index == 132) // Chosen from looking at the results from steady state
             {
                 cell_iter->SetMutationState(p_state);
             }
@@ -83,7 +83,7 @@ public:
        cell_population.SetDampingConstantMutant(10*normal_damping_constant);
 
 
-       simulator.SetEndTime(300);
+       simulator.SetEndTime(600);
 
        simulator.Solve();
 

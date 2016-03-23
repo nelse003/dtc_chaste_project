@@ -10,11 +10,15 @@
 
 
 #include <cxxtest/TestSuite.h>
+
+// Must be included before any other cell_based or crypt headers
+#include "CellBasedSimulationArchiver.hpp"
+
 #include "CheckpointArchiveTypes.hpp"
 #include "SmartPointers.hpp"
 #include "AbstractCellBasedTestSuite.hpp"
 #include "AbstractCellPopulation.hpp"
-
+#include "CellAncestorWriter.hpp"
 #include "CryptCellsGenerator.hpp"
 #include "SimpleWntCellCycleModel.hpp"
 #include "CylindricalHoneycombMeshGenerator.hpp"
@@ -26,12 +30,17 @@
 #include "CellMutationStatesCountWriter.hpp"
 #include "FakePetscSetup.hpp"
 
+#include "CellBasedEventHandler.hpp"
+
 class TestRunningCryptSimulationsWithMutationsTutorial : public AbstractCellBasedTestSuite
 {
 public:
     void TestMeshBasedCryptWithMutations() throw(Exception)
     {
-        CylindricalHoneycombMeshGenerator generator(5, 5, 2);
+    	double time_of_each_run = 10.0;
+    	double end_simulations = 600.0;
+
+        CylindricalHoneycombMeshGenerator generator(10, 10, 2);
         Cylindrical2dMesh* p_mesh = generator.GetCylindricalMesh();
 
         std::vector<unsigned> location_indices = generator.GetCellLocationIndices();
@@ -58,6 +67,8 @@ public:
         simulator.SetSamplingTimestepMultiple(100);
         simulator.SetEndTime(10);
 
+        cell_population.AddCellWriter<CellAncestorWriter>();
+
         MAKE_PTR(GeneralisedLinearSpringForce<2>, p_linear_force);
         simulator.AddForce(p_linear_force);
         MAKE_PTR_ARGS(SloughingCellKiller<2>, p_killer, (&cell_population, crypt_height));
@@ -71,7 +82,7 @@ public:
         {
             unsigned node_index = cell_population.GetLocationIndexUsingCell(*cell_iter);
 
-            if (node_index == 74) // Chosen from looking at the results from steady state
+            if (node_index == 132) // Chosen from looking at the results from steady state
             {
                 cell_iter->SetMutationState(p_state);
             }
@@ -80,11 +91,23 @@ public:
        double normal_damping_constant = cell_population.GetDampingConstantNormal();
        cell_population.SetDampingConstantMutant(10*normal_damping_constant);
 
-       simulator.SetEndTime(20);
+       CellBasedSimulationArchiver<2, CryptSimulation2d>::Save(&simulator);
 
-       simulator.Solve();
+       for (double t = time_of_each_run; t<end_simulations+0.5; t += time_of_each_run)
+            {
+         	   CryptSimulation2d* p_simulator = CellBasedSimulationArchiver<2, CryptSimulation2d>::Load("MeshBasedCryptWithMutations",t);
+         	   p_simulator->SetEndTime(t+time_of_each_run);
+         	   p_simulator->Solve();
+         	   CellBasedSimulationArchiver<2, CryptSimulation2d>::Save(p_simulator);
+         	   delete p_simulator;
+            }
+
+       CellBasedEventHandler::Headings();
+       CellBasedEventHandler::Report();
 
        WntConcentration<2>::Destroy();
+
+
     }
 };
 

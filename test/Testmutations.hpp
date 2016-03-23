@@ -14,7 +14,7 @@
 #include "SmartPointers.hpp"
 #include "AbstractCellBasedTestSuite.hpp"
 #include "AbstractCellPopulation.hpp"
-
+#include "CellAncestorWriter.hpp"
 #include "CryptCellsGenerator.hpp"
 #include "SimpleWntCellCycleModel.hpp"
 #include "CylindricalHoneycombMeshGenerator.hpp"
@@ -58,6 +58,8 @@ public:
         simulator.SetSamplingTimestepMultiple(100);
         simulator.SetEndTime(10);
 
+        cell_population.AddCellWriter<CellAncestorWriter>();
+
         MAKE_PTR(GeneralisedLinearSpringForce<2>, p_linear_force);
         simulator.AddForce(p_linear_force);
         MAKE_PTR_ARGS(SloughingCellKiller<2>, p_killer, (&cell_population, crypt_height));
@@ -71,7 +73,7 @@ public:
         {
             unsigned node_index = cell_population.GetLocationIndexUsingCell(*cell_iter);
 
-            if (node_index == 74) // Chosen from looking at the results from steady state
+            if (node_index == 14) // Chosen from looking at the results from steady state
             {
                 cell_iter->SetMutationState(p_state);
             }
@@ -80,7 +82,8 @@ public:
        double normal_damping_constant = cell_population.GetDampingConstantNormal();
        cell_population.SetDampingConstantMutant(10*normal_damping_constant);
 
-       simulator.SetEndTime(20);
+
+       simulator.SetEndTime(300);
 
        simulator.Solve();
 

@@ -1,0 +1,21 @@
+Process 0 of 1.
+uname sysname  = Linux
+uname nodename = DTC137
+uname release  = 3.13.0-24-generic
+uname version  = #47-Ubuntu SMP Fri May 2 23:30:00 UTC 2014
+uname machine  = x86_64
+
+Information on number and type of processors:
+model name	: Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz
+model name	: Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz
+model name	: Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz
+model name	: Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz
+
+Information on processor caches, in the same order as above:
+cache size	: 6144 KB
+cache size	: 6144 KB
+cache size	: 6144 KB
+cache size	: 6144 KB
+
+Information on system memory:
+MemTotal:        8083320 kB

@@ -37,9 +37,12 @@ class TestRunningCryptSimulationsWithMutationsTutorial : public AbstractCellBase
 public:
     void TestMeshBasedCryptWithMutations() throw(Exception)
     {
+<<<<<<< HEAD
     	double time_of_each_run = 10.0;
     	double end_simulations = 600.0;
 
+=======
+>>>>>>> b34951813233148051eeb3987943895322af3c4d
         CylindricalHoneycombMeshGenerator generator(10, 10, 2);
         Cylindrical2dMesh* p_mesh = generator.GetCylindricalMesh();
 
@@ -91,7 +94,12 @@ public:
        double normal_damping_constant = cell_population.GetDampingConstantNormal();
        cell_population.SetDampingConstantMutant(10*normal_damping_constant);
 
+<<<<<<< HEAD
        CellBasedSimulationArchiver<2, CryptSimulation2d>::Save(&simulator);
+=======
+
+       simulator.SetEndTime(600);
+>>>>>>> b34951813233148051eeb3987943895322af3c4d
 
        for (double t = time_of_each_run; t<end_simulations+0.5; t += time_of_each_run)
             {

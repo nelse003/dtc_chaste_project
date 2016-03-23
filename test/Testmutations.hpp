@@ -73,11 +73,8 @@ class TestRunningCryptSimulationsWithMutationsTutorial : public AbstractCellBase
 
       //modify at end of timestep
 
-      //MAKE_PTR(SimulationEndTimeModifier<2,2>, p_modifier);
+      //MAKE_PTR(SimulationEndTimeModifier<2>, p_modifier);
       //simulator.AddSimulationModifier(p_modifier);
-
-
-     //==============
  
 
       cell_population.AddCellWriter<CellAncestorWriter>();

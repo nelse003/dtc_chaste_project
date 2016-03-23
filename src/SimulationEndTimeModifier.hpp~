@@ -4,8 +4,8 @@
 
 #include "AbstractCellBasedSimulationModifier.hpp"
 
-template<unsigned DIM>
-class SimulationEndTimeModifier : public AbstractCellBasedSimulationModifier<DIM,DIM> {
+template<unsigned SPACE_DIM>
+class SimulationEndTimeModifier : public AbstractCellBasedSimulationModifier<SPACE_DIM,SPACE_DIM> {
                                    
   private:
 
@@ -16,7 +16,7 @@ class SimulationEndTimeModifier : public AbstractCellBasedSimulationModifier<DIM
      *
      * @param rCellPopulation reference to the cell population
      */
-    void UpdateAtEndOfOutputTimeStep(AbstractCellPopulation<DIM,DIM>& rCellPopulation){
+    void UpdateAtEndOfOutputTimeStep(AbstractCellPopulation<SPACE_DIM,SPACE_DIM>& rCellPopulation){
     }
 
 
@@ -25,17 +25,11 @@ class SimulationEndTimeModifier : public AbstractCellBasedSimulationModifier<DIM
      *
      * @param rCellPopulation reference to the cell population
      */
-    void UpdateAtEndOfTimeStep(AbstractCellPopulation<DIM,DIM>& rCellPopulation)
+    void UpdateAtEndOfTimeStep(AbstractCellPopulation<SPACE_DIM,SPACE_DIM>& rCellPopulation)
     {
       // need to get number of different clones
       
-      /*
-      std::vector<unsigned> location_indices = generator.GetCellLocationIndices();
-      for(int i = 0; i < (int) location_indices.size(); i++){
-        std::cout << location_indices[i] << std::endl;
-      }
-      */
-
+      std::cout << rCellPopulation.GetNumNodes() << std::endl;
       
       // if number of different clones is = 1, terminate (i.e. set simulation end time to now)
       
@@ -43,7 +37,16 @@ class SimulationEndTimeModifier : public AbstractCellBasedSimulationModifier<DIM
     }
 
 
-
+    /**
+     * Output any simulation modifier parameters to file.
+     *
+     * As this method is pure virtual, it must be overridden
+     * in subclasses.
+     *
+     * @param rParamsFile the file stream to which the parameters are output
+     */
+    void OutputSimulationModifierParameters(out_stream& rParamsFile){
+    }
 
 };
 

@@ -28,11 +28,14 @@
 #include "WntConcentration.hpp"
 #include "SloughingCellKiller.hpp"
 #include "CellMutationStatesCountWriter.hpp"
-#include "FakePetscSetup.hpp"
 
 #include "CellBasedEventHandler.hpp"
 
 #include "SimulationEndTimeModifier.hpp"
+#include "DeltaNotchTrackingModifier.hpp"
+
+//Include this last
+#include "FakePetscSetup.hpp"
 
 
 class TestRunningCryptSimulationsWithMutationsTutorial : public AbstractCellBasedTestSuite
@@ -40,6 +43,7 @@ class TestRunningCryptSimulationsWithMutationsTutorial : public AbstractCellBase
   public:
     void TestMeshBasedCryptWithMutations() throw(Exception)
     {
+    	EXIT_IF_PARALLEL;
 
       double time_of_each_run = 10.0;
       double end_simulations = 600.0;
@@ -73,8 +77,8 @@ class TestRunningCryptSimulationsWithMutationsTutorial : public AbstractCellBase
 
       //modify at end of timestep
 
-      //MAKE_PTR(SimulationEndTimeModifier<2>, p_modifier);
-      //simulator.AddSimulationModifier(p_modifier);
+      MAKE_PTR(SimulationEndTimeModifier<2>, p_modifier);
+      simulator.AddSimulationModifier(p_modifier);
  
 
       cell_population.AddCellWriter<CellAncestorWriter>();
